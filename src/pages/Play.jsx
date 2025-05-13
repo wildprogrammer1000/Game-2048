@@ -130,12 +130,14 @@ function Play() {
     };
     const handleTouchStart = (e) => {
       if (gameOver) return;
+      e.preventDefault(); // Prevent default scrolling
       const touch = e.touches[0];
       touchStartRef.current = { x: touch.clientX, y: touch.clientY };
     };
 
     const handleTouchEnd = (e) => {
       if (moving || !touchStartRef.current || gameOver) return;
+      e.preventDefault(); // Prevent default scrolling
       const touch = e.changedTouches[0];
       const dx = touch.clientX - touchStartRef.current.x;
       const dy = touch.clientY - touchStartRef.current.y;
@@ -173,6 +175,7 @@ function Play() {
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("touchstart", handleTouchStart, { passive: false });
     window.addEventListener("touchend", handleTouchEnd, { passive: false });
+    window.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false }); // Add touchmove handler
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("mousedown", handleMouseDown);
